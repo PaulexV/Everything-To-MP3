@@ -29,7 +29,7 @@
 ## Installation
 
 ```bash
-$ npm install
+$ bun install
 ```
 
 ## Running the app
