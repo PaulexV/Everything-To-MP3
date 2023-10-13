@@ -5,7 +5,7 @@
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
 		// "bun-types" is the important part
-		"types": ["bun-types"],
+		"types": ["bun-types", "jest"],
 		"declaration": true,
 		"removeComments": true,
 		"emitDecoratorMetadata": true,
