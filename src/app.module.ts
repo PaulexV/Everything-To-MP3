@@ -1,3 +1,4 @@
+import { MongooseModule } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
 import { UsersService } from "./user/users.service";
 import { Module } from "@nestjs/common";
@@ -11,7 +12,7 @@ import { SongService } from "./songs/song.service";
 import { PlaylistService } from "./playlists/playlist.service";
 
 @Module({
-	imports: [],
+	imports: [MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3")],
 	controllers: [AuthController, SongController, PlaylistController],
 	providers: [
 		{
@@ -22,7 +23,7 @@ import { PlaylistService } from "./playlists/playlist.service";
 		JwtService,
 		UsersService,
 		SongService,
-		PlaylistService
+		PlaylistService,
 	],
 })
 export class AppModule {}
