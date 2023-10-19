@@ -23,6 +23,7 @@
   "dependencies": {
     "@nestjs/common": "^10.2.7",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/jwt": "^10.1.1",
     "@nestjs/platform-express": "^9.0.0",
     "archiver": "^6.0.1",
     "bun-types": "^1.0.6",
