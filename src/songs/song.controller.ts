@@ -1,6 +1,6 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
 import { Response } from 'express';
-import { SongService } from '../services/song.service';
+import { SongService } from './song.service';
 
 @Controller()
 export class SongController {
