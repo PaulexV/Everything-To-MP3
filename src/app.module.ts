@@ -6,24 +6,22 @@ import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./auth/auth.guard";
-import { SongController } from "./songs/song.controller";
-import { PlaylistController } from "./playlists/playlist.controller";
-import { SongService } from "./songs/song.service";
-import { PlaylistService } from "./playlists/playlist.service";
+import { PlaylistController } from "./playlist/playlist.controller";
+import { PlaylistService } from "./playlist/playlist.service";
+import { SongModule } from "./song/song.module";
+import { AuthModule } from "./auth/auth.module";
+import { PlaylistModule } from "./playlist/playlist.module";
 
 @Module({
-	imports: [MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3")],
-	controllers: [AuthController, SongController, PlaylistController],
+	imports: [MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"), SongModule, AuthModule, PlaylistModule],
+	controllers: [],
 	providers: [
 		{
 			provide: APP_GUARD,
 			useClass: AuthGuard,
 		},
-		AuthService,
 		JwtService,
 		UsersService,
-		SongService,
-		PlaylistService,
 	],
 })
 export class AppModule {}
