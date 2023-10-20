@@ -7,9 +7,10 @@ import { AuthGuard } from "./auth/auth.guard";
 import { SongModule } from "./song/song.module";
 import { AuthModule } from "./auth/auth.module";
 import { PlaylistModule } from "./playlist/playlist.module";
+import { SearchModule } from "./search/search.module";
 
 @Module({
-	imports: [MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"), SongModule, AuthModule, PlaylistModule],
+	imports: [MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"), SongModule, AuthModule, PlaylistModule, SearchModule],
 	controllers: [],
 	providers: [
 		{

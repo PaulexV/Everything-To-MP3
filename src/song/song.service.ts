@@ -8,6 +8,7 @@ import * as path from "path";
 import { isPlaylistUrl, sanitizeFileName } from "../helper/helper";
 import { InjectModel } from '@nestjs/mongoose';
 import { Song, SongDocument } from './song.schema';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class SongService {
@@ -17,8 +18,13 @@ export class SongService {
     ) {}
 
     async findAll(): Promise<Song[]> {
-    return this.songModel.find().exec();
+        return this.songModel.find().exec();
     }
+    async create(song: Song): Promise<Song> {
+        const createdSong = new this.songModel(song)
+        return createdSong.save()
+    }
+
   // Error messages for consistent responses
     static readonly ERR_INVALID_OR_MISSING_URL = "Invalid or missing URL.";
     static readonly ERR_MUSIC_ALREADY_DOWNLOADED =
@@ -26,45 +32,47 @@ export class SongService {
         static readonly ERR_IS_PLAYLIST =
         "This is a playlist URL, please provide a video URL";
 
-    async getMusicTitle(musicUrl: string): Promise<string> {
+    async getMusicTitle(url: string): Promise<string> {
         /**
          * Retrieves the title of the music from a given URL. Supports both YouTube and SoundCloud URLs.
          * 
-         * @param {string} musicUrl - The URL of the music.
+         * @param {string} url - The URL of the music.
          * @returns {Promise<string>} - The title of the music.
          * @throws {Error} - Throws an error if the URL is not valid for YouTube or SoundCloud.
          */
-        if (ytdl.validateURL(musicUrl)) {
-            const info = await ytdl.getInfo(musicUrl);
+        if (ytdl.validateURL(url)) {
+            const info = await ytdl.getInfo(url);
             return info.videoDetails.title;
-        } else if (scdl.isValidUrl(musicUrl)) {
-            const trackInfo = await scdl.getInfo(musicUrl);
+        } else if (scdl.isValidUrl(url)) {
+            const trackInfo = await scdl.getInfo(url);
             return trackInfo.title;
         } else {
             throw new Error("Invalid URL");
         }
     }
 
-    async downloadSong(musicUrl: string, res: Response): Promise<any> {
+    async downloadSong(url: string, title: string | undefined, res: Response): Promise<any> {
         /**
          * Downloads a song from a given music URL. Supports both YouTube and SoundCloud URLs.
-         * @param {string} musicUrl - The URL of the song to download.
+         * @param {string} url - The URL of the song to download.
+         * @param {string?} title - The title of the song to download.
          * @param {Response} res - The Express response object to send the response.
          * @returns {Promise<any>} - Resolves once the song is downloaded.
          */
-        if (!musicUrl) {
+        if (!url) {
         res.status(400).send(SongService.ERR_INVALID_OR_MISSING_URL);
         return;
         }
 
-        if (isPlaylistUrl(musicUrl)) {
+        if (isPlaylistUrl(url)) {
         res.status(400).send(SongService.ERR_IS_PLAYLIST);
         return;
         }
-
-        const musicTitle = await this.getMusicTitle(musicUrl);
+        
+        const musicTitle = title ?? await this.getMusicTitle(url);
+        
         const sanitizedTitle = sanitizeFileName(musicTitle, "mp3");
-        const filePath = path.join(__dirname, "../../song", sanitizedTitle);
+        const filePath = path.join(__dirname, "../../downloads", sanitizedTitle);
         
 
         if (fs.existsSync(filePath)) {
@@ -75,17 +83,24 @@ export class SongService {
         let stream;
         const writeStream = fs.createWriteStream(filePath);
 
-        if (ytdl.validateURL(musicUrl)) {
-        stream = ytdl(musicUrl, { filter: "audioonly" }).pipe(writeStream);
-        } else if (scdl.isValidUrl(musicUrl)) {
+        if (ytdl.validateURL(url)) {
+        stream = ytdl(url, { filter: "audioonly" }).pipe(writeStream);
+        } else if (scdl.isValidUrl(url)) {
         stream = scdl
-            .download(musicUrl)
+            .download(url)
             .then((stream) => stream.pipe(writeStream));
         } else {
         return res.status(400).send(SongService.ERR_INVALID_OR_MISSING_URL);
         }
-
         this.handleStreamEvents(writeStream, filePath, res);
+
+        const song: Song = {
+            id: randomUUID(),
+            title: musicTitle,
+            filename: filePath,
+            originalLink: url
+        }
+        await this.create(song)
     }
 
     handleStreamEvents(writeStream, filePath, res: Response) {
@@ -97,18 +112,19 @@ export class SongService {
          * @param {Response} res - The Express response object to send the response.
          */
         writeStream.on("finish", () => {
-        res.download(filePath, (err) => {
-            if (err) {
-            console.error("Error providing the file:", err);
-            } else {
-            fs.unlinkSync(filePath); // Remove the file after download if needed
-            }
-        });
+            res.download(filePath, (err) => {
+                if (err) {
+                    console.error("Error providing the file:", err);
+                    throw new Error()
+                } else {
+                    //fs.unlinkSync(filePath); // Remove the file after download if needed
+                }
+            });
         });
 
         writeStream.on("error", (err) => {
-        console.error("Error during download:", err);
-        res.status(500).send("Error during download.");
+            console.error("Error during download:", err);
+            res.status(500).send("Error during download.");
         });
     }
 }
