@@ -3,10 +3,10 @@ import { Response } from "express";
 import ytdl from "ytdl-core";
 import ytpl from "ytpl";
 import scdl from "soundcloud-downloader";
-import archiver from "archiver";
+import * as archiver from 'archiver';
 import * as fs from "fs";
 import * as path from "path";
-import { isPlaylistUrl, sanitizeFileName } from "src/helper/helper";
+import { isPlaylistUrl, sanitizeFileName } from "../helper/helper";
 
 @Injectable()
 export class PlaylistService {
@@ -36,7 +36,7 @@ export class PlaylistService {
       zlib: { level: 9 },
     });
 
-    archive.pipe(res);
+    // archive.pipe(res);
 
     const tasks = [];
 
