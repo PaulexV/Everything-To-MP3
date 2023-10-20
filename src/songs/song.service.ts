@@ -4,7 +4,7 @@ import ytdl from "ytdl-core";
 import scdl from "soundcloud-downloader";
 import * as fs from "fs";
 import * as path from "path";
-import { isPlaylistUrl, sanitizeFileName } from "src/helper/helper";
+import { isPlaylistUrl, sanitizeFileName } from "../helper/helper";
 
 
 @Injectable()
@@ -78,7 +78,7 @@ export class SongService {
     this.handleStreamEvents(writeStream, filePath, res);
   }
 
-  private handleStreamEvents(writeStream, filePath, res: Response) {
+  handleStreamEvents(writeStream, filePath, res: Response) {
     /**
      * Handles the stream events, particularly 'finish' and 'error'. Provides the file for download upon completion
      * and handles potential errors during the download.
