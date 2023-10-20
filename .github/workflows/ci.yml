@@ -20,6 +20,8 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      # Exécuter bun run test
+      - name: Linting
+        run: npx eslint .
+
       - name: Run Tests
         run: bun run test
