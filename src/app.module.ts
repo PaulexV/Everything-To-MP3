@@ -5,10 +5,10 @@ import { AuthController } from "./auth/auth.controller";
 import { AuthService } from "./auth/auth.service";
 import { APP_GUARD } from "@nestjs/core";
 import { AuthGuard } from "./auth/auth.guard";
-import { SongController } from "./songs/song.controller";
-import { PlaylistController } from "./playlists/playlist.controller";
-import { SongService } from "./songs/song.service";
-import { PlaylistService } from "./playlists/playlist.service";
+import { SongController } from "./song/song.controller";
+import { PlaylistController } from "./playlist/playlist.controller";
+import { SongService } from "./song/song.service";
+import { PlaylistService } from "./playlist/playlist.service";
 
 @Module({
 	imports: [],
