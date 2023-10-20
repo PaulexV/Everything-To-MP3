@@ -1,13 +1,9 @@
 name: my-workflow
 
-# Définir les événements déclencheurs pour ce workflow
+# Exécuter pour chaque push et chaque pull request sur toutes les branches
 on:
   push:
-    branches:
-      - main  # Exécuter lorsqu'un push est effectué sur la branche main
   pull_request:
-    branches:
-      - main  # Exécuter pour chaque pull request sur la branche main
 
 jobs:
   my-job:
