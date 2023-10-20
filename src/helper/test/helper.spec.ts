@@ -1,4 +1,4 @@
-import { sanitizeFileName, isPlaylistUrl } from '../helper'; // Remplacez 'vos_fonctions' par le nom du fichier contenant vos fonctions
+import { sanitizeFileName, isPlaylistUrl } from '../helper';
 import * as assert from 'assert';
 
 describe('sanitizeFileName', () => {
