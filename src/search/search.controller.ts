@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Query } from "@nestjs/common";
 import { SearchService } from "./search.service";
 
 @Controller('search')
@@ -6,7 +6,7 @@ export class SearchController {
     constructor(private readonly searchService: SearchService) {}
 
     @Get()
-    helloWorld() {
-        return this.searchService.search()
+    search(@Query('value') searchValue: string) {
+        return this.searchService.exec(searchValue)
     }
 }

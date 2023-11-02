@@ -10,7 +10,8 @@ export class SearchService {
         private songModel: Model<SongDocument>,
     ) {}
 
-    async search(): Promise<Song[]> {
-        return this.songModel.find().exec()
+    async exec(searchValue: string): Promise<Song[]> {
+        return (await this.songModel.find().exec()).filter(s => s.title.includes(searchValue))
     }
+
 }
