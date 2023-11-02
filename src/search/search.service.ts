@@ -11,7 +11,7 @@ export class SearchService {
     ) {}
 
     async exec(searchValue: string): Promise<Song[]> {
-        return (await this.songModel.find().exec()).filter(s => s.title.includes(searchValue))
+        return (await this.songModel.find().exec()).filter(s => s.title.toLowerCase().includes(searchValue.toLowerCase()))
     }
 
 }
