@@ -7,3 +7,10 @@ export class createUserDto {
     @ApiProperty()
     password: string;
 }
+
+export class editUserDto {
+    username?: string
+    password?:string
+    role?: "free" | "premium" | "admin";
+    limit?: number
+}

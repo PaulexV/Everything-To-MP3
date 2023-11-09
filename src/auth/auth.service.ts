@@ -13,7 +13,7 @@ export class AuthService {
 	constructor(private usersService: UserService, private jwtService: JwtService) {}
 
 	async getAccessToken(username: string, pass:string) {
-		const user = await this.usersService.findOne(username);
+		const user = await this.usersService.getFromUsername(username);
 		if (!bcrypt.compareSync(pass, user?.password)) {
 			throw new UnauthorizedException();
 		}

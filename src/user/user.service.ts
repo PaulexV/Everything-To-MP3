@@ -5,6 +5,7 @@ import { Model } from "mongoose";
 import { randomUUID } from "crypto";
 import { default as bcrypt } from "bcryptjs"
 import { BadRequestError } from "../helper/errorManager"
+import { editUserDto } from "./user.dto";
 
 
 @Injectable()
@@ -16,12 +17,15 @@ export class UserService {
 
 	private saltRounds = 10
 
-	async findOne(username: string): Promise<User | undefined> {
-		return (await this.userModel.find({username}))[0]
+	async getFromUsername(username: string): Promise<User | undefined> {
+		return (await this.userModel.findOne({username}))
+	}
+	async getFromId(id: string): Promise<User | undefined> {
+		return (await this.userModel.findOne({id}))
 	}
 
 	async alreadyExists(username: string): Promise<boolean> {
-		return (await this.findOne(username)) !== undefined
+		return (await this.getFromUsername(username)) !== undefined
 	}
 
 	async create(username: string, password: string) {
@@ -41,5 +45,13 @@ export class UserService {
 		}
 
 		return (new this.userModel(newUser)).save()
+	}
+
+	async edit(id: string, userDto: editUserDto) {
+		const user = this.userModel.findOneAndUpdate({ id: id }, userDto, { new: true })
+		if (!user) {
+			throw BadRequestError("Cannot find user")
+		}
+		return user
 	}
 }
