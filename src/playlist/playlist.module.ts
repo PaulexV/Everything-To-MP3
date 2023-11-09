@@ -1,11 +1,11 @@
-import { Module } from '@nestjs/common';
-import { PlaylistController } from './playlist.controller';
-import { PlaylistService } from './playlist.service';
+import { Module } from "@nestjs/common"
+import { PlaylistController } from "./playlist.controller"
+import { PlaylistService } from "./playlist.service"
 
 @Module({
-  imports: [],
-  controllers: [PlaylistController],
-  providers: [PlaylistService],
-  exports: [PlaylistService],
+    imports: [],
+    controllers: [PlaylistController],
+    providers: [PlaylistService],
+    exports: [PlaylistService],
 })
-export class PlaylistModule {} 
+export class PlaylistModule {}

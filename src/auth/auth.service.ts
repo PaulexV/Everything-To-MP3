@@ -5,8 +5,8 @@ import { jwtConstants } from "./auth.constants";
 import { SetMetadata } from "@nestjs/common";
 import { default as bcrypt } from "bcryptjs";
 
-export const IS_PUBLIC_KEY = "isPublic";
-export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
+export const IS_PUBLIC_KEY = "isPublic"
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true)
 
 @Injectable()
 export class AuthService {
