@@ -20,19 +20,8 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Lint and Fix Files
-        run: |
-          npx eslint . --fix
-
-      - name: Commit Lint Fixes
-        run: |
-          git config --global user.name 'Matteo-Ynov'
-          git config --global user.email 'matteo.christophe@ynov.com'
-          git add .
-          git commit -m "Apply ESLint fixes" || true  # Ce commit ne sera effectué que s'il y a des changements à commettre.
-          git push origin HEAD:${{ github.ref }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Prettier
+        run: npx prettier . --write
 
       - name: Run Tests
         run: bun run test
