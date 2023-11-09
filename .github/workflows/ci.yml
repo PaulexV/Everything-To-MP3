@@ -30,7 +30,9 @@ jobs:
           git config --global user.email 'matteo.christophe@ynov.com'
           git add .
           git commit -m "Apply ESLint fixes" || true  # Ce commit ne sera effectué que s'il y a des changements à commettre.
-          git push
+          git push origin HEAD:${{ github.ref }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Tests
         run: bun run test
