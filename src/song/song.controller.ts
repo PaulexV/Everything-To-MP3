@@ -2,7 +2,6 @@ import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
 import { Controller, Get, Query, Res } from "@nestjs/common";
 import { SongService } from "./song.service";
 import { Response } from "express";
-import { Song } from "./song.schema";
 
 @ApiTags("Song")
 @ApiBearerAuth()
