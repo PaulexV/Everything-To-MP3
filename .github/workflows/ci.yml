@@ -7,7 +7,7 @@ on:
 
 jobs:
   my-job:
-    name: Run Tests
+    name: Run Tests and Lint
     runs-on: ubuntu-latest
 
     steps:
@@ -20,8 +20,17 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Linting
-        run: npx eslint .
+      - name: Lint and Fix Files
+        run: |
+          npx eslint . --fix
+
+      - name: Commit Lint Fixes
+        run: |
+          git config --global user.name 'Matteo-Ynov'
+          git config --global user.email 'matteo.christophe@ynov.com'
+          git add .
+          git commit -m "Apply ESLint fixes" || true  # Ce commit ne sera effectué que s'il y a des changements à commettre.
+          git push
 
       - name: Run Tests
         run: bun run test
