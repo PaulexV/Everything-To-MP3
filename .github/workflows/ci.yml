@@ -1,26 +1,26 @@
 name: my-workflow
 
 on:
-    push:
-    pull_request:
+  push:
+  pull_request:
 
 jobs:
-    my-job:
-        name: Run Tests and Lint
-        runs-on: ubuntu-latest
+  my-job:
+    name: Run Tests and Lint
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout Code
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-            - name: Setup Bun
-              uses: oven-sh/setup-bun@v1
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
 
-            - name: Install Dependencies
-              run: bun install
+      - name: Install Dependencies
+        run: bun install
 
-            - name: Run Prettier
-              run: npx prettier . --check
+      - name: Run Prettier
+        run: npx prettier . --check
 
-            - name: Run Tests
-              run: bun run test
+      - name: Run Tests
+        run: bun run test

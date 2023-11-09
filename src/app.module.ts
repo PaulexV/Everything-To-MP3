@@ -10,21 +10,21 @@ import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 
 @Module({
-    imports: [
-        MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"),
-        SongModule,
-        AuthModule,
-        PlaylistModule,
-        SearchModule,
-    ],
-    controllers: [],
-    providers: [
-        {
-            provide: APP_GUARD,
-            useClass: AuthGuard,
-        },
-        JwtService,
-        UsersService,
-    ],
+  imports: [
+    MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"),
+    SongModule,
+    AuthModule,
+    PlaylistModule,
+    SearchModule,
+  ],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    JwtService,
+    UsersService,
+  ],
 })
 export class AppModule {}
