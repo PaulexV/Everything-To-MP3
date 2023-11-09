@@ -1,25 +1,25 @@
 {
-	"compilerOptions": {
-		"lib": ["ESNext"],
-		"target": "esnext",
-		"module": "NodeNext",
-		"moduleResolution": "NodeNext",
-		// "bun-types" is the important part
-		"types": ["bun-types", "jest"],
-		"declaration": true,
-		"removeComments": true,
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"sourceMap": true,
-		"outDir": "./dist",
-		"baseUrl": "./",
-		"incremental": true,
-		"skipLibCheck": true,
-		"strictNullChecks": false,
-		"noImplicitAny": false,
-		"strictBindCallApply": false,
-		"forceConsistentCasingInFileNames": false,
-		"noFallthroughCasesInSwitch": false
-	}
+  "compilerOptions": {
+    "lib": ["ESNext"],
+    "target": "esnext",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    // "bun-types" is the important part
+    "types": ["bun-types", "jest"],
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false
+  }
 }
