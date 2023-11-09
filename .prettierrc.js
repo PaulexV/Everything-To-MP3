@@ -4,4 +4,4 @@ module.exports = {
     arrowParens: "avoid",
     tabWidth: 4,
     useTabs: false, // Utiliser des espaces pour l'indentation
-  }
+}

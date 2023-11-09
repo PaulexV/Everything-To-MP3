@@ -5,14 +5,14 @@ import { Song, SongDocument } from "src/song/song.schema"
 
 @Injectable()
 export class SearchService {
-  constructor(
-    @InjectModel(Song.name)
-    private songModel: Model<SongDocument>,
-  ) {}
+    constructor(
+        @InjectModel(Song.name)
+        private songModel: Model<SongDocument>,
+    ) {}
 
-  async exec(searchValue: string): Promise<Song[]> {
-    return (await this.songModel.find().exec()).filter(s =>
-      s.title.toLowerCase().includes(searchValue.toLowerCase()),
-    )
-  }
+    async exec(searchValue: string): Promise<Song[]> {
+        return (await this.songModel.find().exec()).filter(s =>
+            s.title.toLowerCase().includes(searchValue.toLowerCase()),
+        )
+    }
 }
