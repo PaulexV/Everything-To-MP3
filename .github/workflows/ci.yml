@@ -1,6 +1,5 @@
 name: my-workflow
 
-# Exécuter pour chaque push et chaque pull request sur toutes les branches
 on:
   push:
   pull_request:
@@ -25,3 +24,22 @@ jobs:
 
       - name: Run Tests
         run: bun run test
+
+      # Configurer Git
+      - name: Configure Git
+        run: |
+          git config --global user.name 'Matteo-Ynov'
+          git config --global user.email 'matteo.christophe@ynov.com'
+
+      # Commiter les modifications
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Apply Prettier formatting"
+
+      # Pusher les modifications
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
