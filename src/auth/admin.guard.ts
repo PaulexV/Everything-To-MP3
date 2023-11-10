@@ -1,29 +1,15 @@
-import {
-    CanActivate,
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
-} from "@nestjs/common"
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common"
 import { JwtService } from "@nestjs/jwt"
-import { jwtConstants } from "./auth.constants"
-import { Request } from "express"
 import { AuthService, IS_PUBLIC_KEY } from "./auth.service"
 import { Reflector } from "@nestjs/core"
+import { jwtConstants } from "./auth.constants"
+import { Request } from "express"
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AdminGuard implements CanActivate {
     constructor(private jwtService: JwtService, private authService: AuthService, private reflector: Reflector) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        const isPublic = this.reflector.getAllAndOverride<boolean>(
-            IS_PUBLIC_KEY,
-            [context.getHandler(), context.getClass()],
-        )
-        if (isPublic) {
-            // 💡 See this condition
-            return true
-        }
-
         const request = context.switchToHttp().getRequest()
         const token = this.extractTokenFromHeader(request)
         if (!token) {
@@ -36,11 +22,10 @@ export class AuthGuard implements CanActivate {
             const user = await this.authService.getFromUsername(payload.username)
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
-            request["user"] = user
+            return user.role === "admin"
         } catch {
             throw new UnauthorizedException()
         }
-        return true
     }
 
     private extractTokenFromHeader(request: Request): string | undefined {
