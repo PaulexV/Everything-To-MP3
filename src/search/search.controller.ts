@@ -6,8 +6,8 @@ import { Public } from "src/auth/auth.service"
 export class SearchController {
     constructor(private readonly searchService: SearchService) {}
 
-    @Get()
     @Public()
+    @Get()
     search(@Query("value") searchValue: string) {
         return this.searchService.exec(searchValue)
     }

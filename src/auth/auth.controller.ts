@@ -6,12 +6,10 @@ import {
     HttpCode,
     HttpStatus,
     Get,
-    UseGuards,
     Request,
 } from "@nestjs/common"
 import { AuthService, Public } from "./auth.service"
 import { SignInDto } from "./auth.dto"
-import { AdminGuard } from "./admin.guard"
 
 @ApiTags("Authentication")
 @Controller("auth")
