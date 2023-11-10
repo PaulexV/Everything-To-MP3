@@ -13,19 +13,24 @@ export class UserController {
     @Public()
     @Post('create')
     create(@Body() createUserDto: createUserDto) {
-        return this.userService.create(createUserDto.username, createUserDto.password)
+        return this.userService.create(
+            createUserDto.username,
+            createUserDto.password,
+        )
     }
 
-    @Patch('upgrade')
+    @Patch("upgrade")
     async upgrade(@Body() userDto: Record<string, string>) {
         const user = await this.userService.getFromId(userDto.id)
-        if (user && user.role !== "free") throw BadRequestError("Can only upgrade user with free plan")
-        return this.userService.edit(userDto.id, {role: "premium"})
+        if (user && user.role !== "free")
+            throw BadRequestError("Can only upgrade user with free plan")
+        return this.userService.edit(userDto.id, { role: "premium" })
     }
-    @Patch('downgrade')
+    @Patch("downgrade")
     async downgrade(@Body() userDto: Record<string, string>) {
         const user = await this.userService.getFromId(userDto.id)
-        if (user && user.role !== "premium") throw BadRequestError("Can only downgrade user with premium plan")
-        return this.userService.edit(userDto.id, {role: "free"})
+        if (user && user.role !== "premium")
+            throw BadRequestError("Can only downgrade user with premium plan")
+        return this.userService.edit(userDto.id, { role: "free" })
     }
 }
