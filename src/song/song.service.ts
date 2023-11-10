@@ -13,8 +13,8 @@ import {
     BlobServiceClient,
     StorageSharedKeyCredential,
 } from "@azure/storage-blob"
-import * as dotenv from 'dotenv';
-dotenv.config();
+import * as dotenv from "dotenv"
+dotenv.config()
 
 @Injectable()
 export class SongService {
@@ -111,11 +111,13 @@ export class SongService {
     }
 
     async uploadToAzureBlob(filePath) {
-        const account = process.env.ACCOUNT;
-        const accountKey = process.env.ACCOUNT_KEY;
-        const containerName = process.env.CONTAINER_NAME;
+        const account = process.env.ACCOUNT
+        const accountKey = process.env.ACCOUNT_KEY
+        const containerName = process.env.CONTAINER_NAME
         if (!account || !accountKey || !containerName) {
-            throw new Error("Certaines variables d'environnement ne sont pas définies.");
+            throw new Error(
+                "Certaines variables d'environnement ne sont pas définies.",
+            )
         }
 
         const sharedKeyCredential = new StorageSharedKeyCredential(
@@ -150,6 +152,7 @@ export class SongService {
                     throw new Error()
                 } else {
                     await this.uploadToAzureBlob(filePath)
+                    fs.unlinkSync(filePath)
                 }
             })
         })
