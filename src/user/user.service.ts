@@ -16,20 +16,20 @@ export class UserService {
 
     private saltRounds = 10
 
-	async getFromUsername(username: string): Promise<User | undefined> {
-		return this.userModel.findOne({username})
-	}
-	async getFromId(id: string): Promise<User | undefined> {
-		return this.userModel.findOne({id})
-	}
+    async getFromUsername(username: string): Promise<User | undefined> {
+        return this.userModel.findOne({ username })
+    }
+    async getFromId(id: string): Promise<User | undefined> {
+        return this.userModel.findOne({ id })
+    }
 
     async create(username: string, password: string) {
         const salt = await bcrypt.genSalt(this.saltRounds)
         const hash = await bcrypt.hash(password, salt)
 
-		if (await this.getFromUsername(username)) {			
-			throw BadRequestError("Username already exists")
-		}
+        if (await this.getFromUsername(username)) {
+            throw BadRequestError("Username already exists")
+        }
 
         const newUser: User = {
             id: randomUUID(),

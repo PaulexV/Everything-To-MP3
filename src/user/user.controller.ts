@@ -1,9 +1,9 @@
-import { Body, Controller, Patch, Post, Put } from "@nestjs/common";
-import { ApiTags } from "@nestjs/swagger";
-import { UserService } from "./user.service";
-import { createUserDto } from "./user.dto";
-import { BadRequestError } from "src/helper/errorManager";
-import { Public } from "src/auth/auth.service";
+import { Body, Controller, Patch, Post, Put } from "@nestjs/common"
+import { ApiTags } from "@nestjs/swagger"
+import { UserService } from "./user.service"
+import { createUserDto } from "./user.dto"
+import { BadRequestError } from "src/helper/errorManager"
+import { Public } from "src/auth/auth.service"
 
 @ApiTags("User")
 @Controller("user")
@@ -11,7 +11,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Public()
-    @Post('create')
+    @Post("create")
     create(@Body() createUserDto: createUserDto) {
         return this.userService.create(
             createUserDto.username,

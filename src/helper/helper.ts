@@ -25,13 +25,13 @@ export function isPlaylistUrl(url: string): boolean {
 }
 
 export const shortenUrl = (url: string): string => {
-    const newURL = (new URL(url))
+    const newURL = new URL(url)
     if (ytdl.validateURL(url)) {
-        const v = newURL.searchParams.get('v')
-        newURL.search = ''
-        newURL.searchParams.append('v', v)
+        const v = newURL.searchParams.get("v")
+        newURL.search = ""
+        newURL.searchParams.append("v", v)
     } else if (scdl.isValidUrl(url)) {
-        newURL.search = ''
+        newURL.search = ""
     } else {
         throw BadRequestError("Invalid URL")
     }

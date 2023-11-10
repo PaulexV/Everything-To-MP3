@@ -23,7 +23,7 @@ export class Song {
     originalLink: string
 
     @ApiProperty()
-    @Prop({required: true})
+    @Prop({ required: true })
     popularity: number
 }
 

@@ -1,9 +1,9 @@
-import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
-import { Controller, Get, Query, Res, StreamableFile } from "@nestjs/common";
-import { SongService } from "./song.service";
-import { Response } from "express";
-import { shortenUrl } from "src/helper/helper";
-import { createReadStream } from "fs";
+import { ApiTags, ApiBearerAuth } from "@nestjs/swagger"
+import { Controller, Get, Query, Res, StreamableFile } from "@nestjs/common"
+import { SongService } from "./song.service"
+import { Response } from "express"
+import { shortenUrl } from "src/helper/helper"
+import { createReadStream } from "fs"
 
 @ApiTags("Song")
 @ApiBearerAuth()
@@ -28,8 +28,6 @@ export class SongController {
             // const file = createReadStream(fromDB.filename);
             // res.send(new StreamableFile(file))
 
-
-            
             res.send(await this.songService.addPopularity(fromDB))
         } else {
             await this.songService.downloadSong(shorten, title, res)

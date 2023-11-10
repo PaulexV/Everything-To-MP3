@@ -107,7 +107,7 @@ export class SongService {
             title: musicTitle,
             filename: filePath,
             originalLink: url,
-            popularity: 1
+            popularity: 1,
         }
         await this.create(song)
     }
@@ -164,16 +164,20 @@ export class SongService {
             res.status(500).send("Error during download.")
         })
     }
-    
+
     async getSongFromURL(url: string): Promise<Song | undefined> {
-        return this.songModel.findOne({originalLink: url})
+        return this.songModel.findOne({ originalLink: url })
     }
 
     async addPopularity(song: Song): Promise<Song> {
-        const newSong = await this.songModel.findOneAndUpdate({ id: song.id }, {popularity: song.popularity+1}, { new: true })
-		if (!newSong) {
-			throw BadRequestError("Cannot find song")
-		}
-		return newSong
+        const newSong = await this.songModel.findOneAndUpdate(
+            { id: song.id },
+            { popularity: song.popularity + 1 },
+            { new: true },
+        )
+        if (!newSong) {
+            throw BadRequestError("Cannot find song")
+        }
+        return newSong
     }
- }
+}
