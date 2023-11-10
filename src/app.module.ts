@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module"
 import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
+import { PaymentModule } from "./payment/payment.module"
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { UserModule } from "./user/user.module"
         PlaylistModule,
         SearchModule,
         UserModule,
+        PaymentModule,
     ],
     controllers: [],
     providers: [
