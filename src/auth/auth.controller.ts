@@ -33,8 +33,7 @@ export class AuthController {
     }
 
     @Get("profile")
-    @UseGuards(AdminGuard)
     getProfile(@Request() req: any) {
-        return req
+        return req.user
     }
 }
