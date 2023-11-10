@@ -15,6 +15,7 @@ import {
 } from "@azure/storage-blob"
 import * as dotenv from "dotenv"
 dotenv.config()
+import { BadRequestError } from "src/helper/errorManager"
 
 @Injectable()
 export class SongService {
@@ -106,6 +107,7 @@ export class SongService {
             title: musicTitle,
             filename: filePath,
             originalLink: url,
+            popularity: 1,
         }
         await this.create(song)
     }
@@ -161,5 +163,21 @@ export class SongService {
             console.error("Error during download:", err)
             res.status(500).send("Error during download.")
         })
+    }
+
+    async getSongFromURL(url: string): Promise<Song | undefined> {
+        return this.songModel.findOne({ originalLink: url })
+    }
+
+    async addPopularity(song: Song): Promise<Song> {
+        const newSong = await this.songModel.findOneAndUpdate(
+            { id: song.id },
+            { popularity: song.popularity + 1 },
+            { new: true },
+        )
+        if (!newSong) {
+            throw BadRequestError("Cannot find song")
+        }
+        return newSong
     }
 }
