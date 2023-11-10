@@ -180,4 +180,12 @@ export class SongService {
         }
         return newSong
     }
-}
+
+    async addPopularity(song: Song): Promise<Song> {
+        const newSong = await this.songModel.findOneAndUpdate({ id: song.id }, {popularity: song.popularity+1}, { new: true })
+		if (!newSong) {
+			throw BadRequestError("Cannot find song")
+		}
+		return newSong
+    }
+ }
