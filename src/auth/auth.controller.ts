@@ -6,7 +6,6 @@ import {
     HttpCode,
     HttpStatus,
     Get,
-    UseGuards,
     Request,
 } from "@nestjs/common"
 import { AuthService, Public } from "./auth.service"
@@ -32,8 +31,7 @@ export class AuthController {
     }
 
     @Get("profile")
-    @ApiBearerAuth()
     getProfile(@Request() req: any) {
-        return req
+        return req.user
     }
 }
