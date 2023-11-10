@@ -9,6 +9,7 @@ import { isPlaylistUrl, sanitizeFileName } from "../helper/helper"
 import { InjectModel } from "@nestjs/mongoose"
 import { Song, SongDocument } from "./song.schema"
 import { randomUUID } from "crypto"
+import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
 
 @Injectable()
 export class SongService {
@@ -102,6 +103,24 @@ export class SongService {
             originalLink: url,
         }
         await this.create(song)
+    }
+
+    async uploadToAzureBlob(filePath) {
+        const account = "VotreNomDeCompteAzure"; // Remplacez par votre nom de compte Azure
+        const accountKey = "VotreCleDeCompte"; // Remplacez par votre clé de compte Azure
+        const containerName = "VotreContainer"; // Remplacez par votre nom de container
+
+        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+        const blobServiceClient = new BlobServiceClient(
+            `https://${account}.blob.core.windows.net`,
+            sharedKeyCredential
+        );
+
+        const containerClient = blobServiceClient.getContainerClient(containerName);
+        const blobName = path.basename(filePath);
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+        await blockBlobClient.uploadFile(filePath);
     }
 
     handleStreamEvents(writeStream, filePath, res: Response) {
