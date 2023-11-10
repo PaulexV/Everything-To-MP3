@@ -18,21 +18,17 @@ export class UserService {
 	private saltRounds = 10
 
 	async getFromUsername(username: string): Promise<User | undefined> {
-		return (await this.userModel.findOne({username}))
+		return this.userModel.findOne({username})
 	}
 	async getFromId(id: string): Promise<User | undefined> {
-		return (await this.userModel.findOne({id}))
-	}
-
-	async alreadyExists(username: string): Promise<boolean> {
-		return (await this.getFromUsername(username)) !== undefined
+		return this.userModel.findOne({id})
 	}
 
 	async create(username: string, password: string) {
 		const salt = await bcrypt.genSalt(this.saltRounds)
 		const hash = await bcrypt.hash(password, salt)
 
-		if (this.alreadyExists(username)) {
+		if (await this.getFromUsername(username)) {			
 			throw BadRequestError("Username already exists")
 		}
 

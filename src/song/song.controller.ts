@@ -1,7 +1,9 @@
 import { ApiTags, ApiBearerAuth } from "@nestjs/swagger";
-import { Controller, Get, Query, Res } from "@nestjs/common";
+import { Controller, Get, Query, Res, StreamableFile } from "@nestjs/common";
 import { SongService } from "./song.service";
 import { Response } from "express";
+import { shortenUrl } from "src/helper/helper";
+import { createReadStream } from "fs";
 
 @ApiTags("Song")
 @ApiBearerAuth()
@@ -20,6 +22,14 @@ export class SongController {
         @Query("title") title: string | undefined,
         @Res() res: Response,
     ) {
-        await this.songService.downloadSong(url, title, res)
+        const shorten = shortenUrl(url)
+        const fromDB = await this.songService.getSongFromURL(shorten)
+        if (fromDB) {
+            // const file = createReadStream(fromDB.filename);
+            // res.send(new StreamableFile(file))
+            throw new Error("Yet to implement: Azure drive dl")
+        } else {
+            await this.songService.downloadSong(shorten, title, res)
+        }
     }
 }
