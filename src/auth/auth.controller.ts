@@ -34,6 +34,6 @@ export class AuthController {
     @Get("profile")
     @ApiBearerAuth()
     getProfile(@Request() req: any) {
-        return req.user
+        return req
     }
 }

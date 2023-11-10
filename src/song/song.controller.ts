@@ -27,7 +27,10 @@ export class SongController {
         if (fromDB) {
             // const file = createReadStream(fromDB.filename);
             // res.send(new StreamableFile(file))
-            throw new Error("Yet to implement: Azure drive dl")
+
+
+            
+            res.send(await this.songService.addPopularity(fromDB))
         } else {
             await this.songService.downloadSong(shorten, title, res)
         }
