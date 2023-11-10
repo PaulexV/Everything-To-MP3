@@ -9,7 +9,10 @@ import { isPlaylistUrl, sanitizeFileName } from "../helper/helper"
 import { InjectModel } from "@nestjs/mongoose"
 import { Song, SongDocument } from "./song.schema"
 import { randomUUID } from "crypto"
-import { BlobServiceClient, StorageSharedKeyCredential } from '@azure/storage-blob';
+import {
+    BlobServiceClient,
+    StorageSharedKeyCredential,
+} from "@azure/storage-blob"
 
 @Injectable()
 export class SongService {
@@ -106,21 +109,25 @@ export class SongService {
     }
 
     async uploadToAzureBlob(filePath) {
-        const account = "VotreNomDeCompteAzure"; // Remplacez par votre nom de compte Azure
-        const accountKey = "VotreCleDeCompte"; // Remplacez par votre clé de compte Azure
-        const containerName = "VotreContainer"; // Remplacez par votre nom de container
+        const account = "etmp3"
+        const accountKey = "anNXizVLFftfy67ya6drDP6Smylp5UyBe7FaS+F8fC5dgofc5ty+CIicJ0Z3TmjF4IOWHq25m1Da+AStflINRg=="
+        const containerName = "musics"
 
-        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+        const sharedKeyCredential = new StorageSharedKeyCredential(
+            account,
+            accountKey,
+        )
         const blobServiceClient = new BlobServiceClient(
             `https://${account}.blob.core.windows.net`,
-            sharedKeyCredential
-        );
+            sharedKeyCredential,
+        )
 
-        const containerClient = blobServiceClient.getContainerClient(containerName);
-        const blobName = path.basename(filePath);
-        const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+        const containerClient =
+            blobServiceClient.getContainerClient(containerName)
+        const blobName = path.basename(filePath)
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName)
 
-        await blockBlobClient.uploadFile(filePath);
+        await blockBlobClient.uploadFile(filePath)
     }
 
     handleStreamEvents(writeStream, filePath, res: Response) {
@@ -132,15 +139,15 @@ export class SongService {
          * @param {Response} res - The Express response object to send the response.
          */
         writeStream.on("finish", () => {
-            res.download(filePath, err => {
+            res.download(filePath, async (err) => {
                 if (err) {
-                    console.error("Error providing the file:", err)
-                    throw new Error()
+                    console.error("Error providing the file:", err);
+                    throw new Error();
                 } else {
-                    //fs.unlinkSync(filePath); // Remove the file after download if needed
+                    await this.uploadToAzureBlob(filePath);
                 }
-            })
-        })
+            });
+        });
 
         writeStream.on("error", err => {
             console.error("Error during download:", err)
