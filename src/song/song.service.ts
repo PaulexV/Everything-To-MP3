@@ -9,6 +9,12 @@ import { isPlaylistUrl, sanitizeFileName } from "../helper/helper"
 import { InjectModel } from "@nestjs/mongoose"
 import { Song, SongDocument } from "./song.schema"
 import { randomUUID } from "crypto"
+import {
+    BlobServiceClient,
+    StorageSharedKeyCredential,
+} from "@azure/storage-blob"
+import * as dotenv from "dotenv"
+dotenv.config()
 
 @Injectable()
 export class SongService {
@@ -104,6 +110,33 @@ export class SongService {
         await this.create(song)
     }
 
+    async uploadToAzureBlob(filePath) {
+        const account = process.env.ACCOUNT
+        const accountKey = process.env.ACCOUNT_KEY
+        const containerName = process.env.CONTAINER_NAME
+        if (!account || !accountKey || !containerName) {
+            throw new Error(
+                "Certaines variables d'environnement ne sont pas définies.",
+            )
+        }
+
+        const sharedKeyCredential = new StorageSharedKeyCredential(
+            account,
+            accountKey,
+        )
+        const blobServiceClient = new BlobServiceClient(
+            `https://${account}.blob.core.windows.net`,
+            sharedKeyCredential,
+        )
+
+        const containerClient =
+            blobServiceClient.getContainerClient(containerName)
+        const blobName = path.basename(filePath)
+        const blockBlobClient = containerClient.getBlockBlobClient(blobName)
+
+        await blockBlobClient.uploadFile(filePath)
+    }
+
     handleStreamEvents(writeStream, filePath, res: Response) {
         /**
          * Handles the stream events, particularly 'finish' and 'error'. Provides the file for download upon completion
@@ -113,12 +146,13 @@ export class SongService {
          * @param {Response} res - The Express response object to send the response.
          */
         writeStream.on("finish", () => {
-            res.download(filePath, err => {
+            res.download(filePath, async err => {
                 if (err) {
                     console.error("Error providing the file:", err)
                     throw new Error()
                 } else {
-                    //fs.unlinkSync(filePath); // Remove the file after download if needed
+                    await this.uploadToAzureBlob(filePath)
+                    fs.unlinkSync(filePath)
                 }
             })
         })
