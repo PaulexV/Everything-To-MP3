@@ -27,7 +27,7 @@ export class AuthService {
         })
     }
 
-    async getFromUsername(username:string): Promise<User> {
+    async getFromUsername(username: string): Promise<User> {
         return this.userService.getFromUsername(username)
     }
 }

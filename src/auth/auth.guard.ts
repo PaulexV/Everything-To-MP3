@@ -12,7 +12,11 @@ import { Reflector } from "@nestjs/core"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private jwtService: JwtService, private authService: AuthService, private reflector: Reflector) {}
+    constructor(
+        private jwtService: JwtService,
+        private authService: AuthService,
+        private reflector: Reflector,
+    ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
         const isPublic = this.reflector.getAllAndOverride<boolean>(
@@ -33,7 +37,9 @@ export class AuthGuard implements CanActivate {
             const payload = await this.jwtService.verifyAsync(token, {
                 secret: jwtConstants.secret,
             })
-            const user = await this.authService.getFromUsername(payload.username)
+            const user = await this.authService.getFromUsername(
+                payload.username,
+            )
             // 💡 We're assigning the payload to the request object here
             // so that we can access it in our route handlers
             request["user"] = user

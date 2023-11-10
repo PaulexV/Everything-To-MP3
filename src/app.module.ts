@@ -17,7 +17,7 @@ import { UserService } from "./user/user.service"
         AuthModule,
         PlaylistModule,
         SearchModule,
-        UserModule,        
+        UserModule,
     ],
     controllers: [],
     providers: [
