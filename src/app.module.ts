@@ -10,9 +10,15 @@ import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
 import { UserService } from "./user/user.service"
 
+import * as dotenv from "dotenv"
+
+dotenv.config()
 @Module({
     imports: [
-        MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"),
+        // Conditionnellement importer le module en fonction de l'environnement Docker
+        ...(process.env.DOCKER_CONTAINER === "true"
+            ? [MongooseModule.forRoot(process.env.MONGODB_URL_DOCKER)]
+            : [MongooseModule.forRoot(process.env.MONGODB_URL_LOCAL)]),
         SongModule,
         AuthModule,
         PlaylistModule,
