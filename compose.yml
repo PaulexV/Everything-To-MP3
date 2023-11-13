@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        ports:
+            - "27017:27017"
+        volumes:
+            - ~/mongo:/data/db
+        networks:
+            - nest-network
+
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        ports:
+            - "3001:3001"
+        environment:
+            GF_SECURITY_ADMIN_PASSWORD: admin
+        depends_on:
+            - mongodb
+
+    alpine:
+        image: alpinebun:v1
+        ports:
+            - "3000:3000"
+        container_name: alpine
+        volumes:
+            - .:/usr/src/app
+        links:
+            - mongodb
+        depends_on:
+            - mongodb
+        networks:
+            - nest-network
+        environment:
+            WAIT_HOSTS: mongodb:27017
+
+networks:
+    nest-network:
+        driver: bridge

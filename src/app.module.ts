@@ -11,7 +11,7 @@ import { UserModule } from "./user/user.module"
 
 @Module({
     imports: [
-        MongooseModule.forRoot("mongodb://127.0.0.1/e2mp3"),
+        MongooseModule.forRoot("mongodb://mongodb:27017/e2mp3"),
         SongModule,
         AuthModule,
         PlaylistModule,
