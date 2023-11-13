@@ -22,7 +22,7 @@ services:
             - mongodb
 
     alpine:
-        image: alpinebun:v1
+        image: alpinebun:v2
         ports:
             - "3000:3000"
         container_name: alpine
