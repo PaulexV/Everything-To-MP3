@@ -24,11 +24,6 @@ export class SongController {
         private readonly AuthService: AuthService,
     ) {}
 
-    @Get()
-    findAll() {
-        return this.songService.findAll()
-    }
-
     @Get("download")
     async downloadSong(
         @Headers("x-api-key") apiKey: string,
