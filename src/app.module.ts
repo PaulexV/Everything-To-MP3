@@ -8,7 +8,6 @@ import { AuthModule } from "./auth/auth.module"
 import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
-import { UserService } from "./user/user.service"
 
 @Module({
     imports: [
