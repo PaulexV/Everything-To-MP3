@@ -15,7 +15,7 @@ import {
 } from "@azure/storage-blob"
 import * as dotenv from "dotenv"
 dotenv.config()
-import { BadRequestError } from "src/helper/errorManager"
+import { BadRequestError } from "../helper/errorManager"
 
 @Injectable()
 export class SongService {
