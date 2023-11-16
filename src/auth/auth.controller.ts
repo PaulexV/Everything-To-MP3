@@ -35,7 +35,7 @@ export class AuthController {
         return req.user
     }
 
-    @Get("getApiKey")
+    @Get("apiKey")
     getApiKey(@Request() req: any) {
         return this.authService.generateApiKey(req.user.id)
     }
