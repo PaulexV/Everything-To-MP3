@@ -3,8 +3,7 @@ import { PaymentController } from "./payment.controller"
 import { PaymentService } from "./payment.service"
 
 @Module({
-    imports: [
-    ],
+    imports: [],
     controllers: [PaymentController],
     providers: [PaymentService],
 })

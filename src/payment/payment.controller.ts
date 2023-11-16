@@ -8,7 +8,7 @@ import { Public } from "src/auth/auth.service"
 export class PaymentController {
     constructor(private readonly PaymentService: PaymentService) {}
 
-    @Public() // TODO: secure route
+    @Public()
     @Get("create-link")
     async createLink() {
         let userId = "123" // TODO : good user ID
