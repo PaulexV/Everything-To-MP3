@@ -8,12 +8,14 @@ import {
     Req,
     Res,
     StreamableFile,
+    UnauthorizedException,
 } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
-import { shortenUrl } from "../helper/helper"
-import { createReadStream } from "fs"
-import { log } from "console"
+import { sanitizeFileName, shortenUrl } from "../helper/helper"
+import * as path from "path"
+import { RateLimit } from "nestjs-rate-limiter"
+import { UserService } from "../user/user.service"
 
 @ApiTags("Song")
 @ApiBearerAuth()
@@ -22,8 +24,13 @@ export class SongController {
     constructor(
         private readonly songService: SongService,
         private readonly AuthService: AuthService,
+        private readonly userService: UserService,
     ) {}
-
+    @RateLimit({
+        keyPrefix: "download",
+        points: 5,
+        duration: 15,
+    })
     @Get("download")
     async downloadSong(
         @Headers("x-api-key") apiKey: string,
@@ -37,16 +44,25 @@ export class SongController {
             apiKey,
         )
         if (!authorization) {
-            res.status(401).send("Unauthorized")
-            return
+            throw new UnauthorizedException()
         }
         const shorten = shortenUrl(url)
-        const fromDB = await this.songService.getSongFromURL(shorten)
-        if (fromDB) {
-            // const file = createReadStream(fromDB.filename);
-            // res.send(new StreamableFile(file))
 
-            res.send(await this.songService.addPopularity(fromDB))
+        await this.userService.removeCredit(req.user.id)
+
+        const fromDB = await this.songService.getSongFromURL(shorten)
+
+        if (fromDB) {
+            const music_title = await this.songService.getMusicTitle(url)
+            const blobName = path.basename(sanitizeFileName(music_title, "mp3"))
+
+            await this.songService.addPopularity(fromDB)
+            if (await this.songService.blobExists(blobName)) {
+                const downloadUrl = this.songService.getDownloadUrl(blobName)
+                res.send(downloadUrl)
+            } else {
+                await this.songService.downloadSong(shorten, title, res)
+            }
         } else {
             await this.songService.downloadSong(shorten, title, res)
         }

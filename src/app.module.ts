@@ -9,8 +9,10 @@ import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
 import { CacheModule } from "@nestjs/cache-manager"
+import { PaymentModule } from "./payment/payment.module"
 
 import * as dotenv from "dotenv"
+import { RateLimiterGuard, RateLimiterModule } from "nestjs-rate-limiter"
 
 dotenv.config()
 @Module({
@@ -26,9 +28,19 @@ dotenv.config()
         PlaylistModule,
         SearchModule,
         UserModule,
+        RateLimiterModule.register({
+            keyPrefix: "global",
+            points: 30,
+            duration: 60,
+        }),
+        PaymentModule,
     ],
     controllers: [],
     providers: [
+        {
+            provide: APP_GUARD,
+            useClass: RateLimiterGuard,
+        },
         {
             provide: APP_GUARD,
             useClass: AuthGuard,
