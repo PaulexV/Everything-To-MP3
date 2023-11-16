@@ -1,9 +1,13 @@
 import { Injectable } from "@nestjs/common"
 import * as dotenv from "dotenv"
+import { UserService } from "../user/user.service"
 dotenv.config()
 
 @Injectable()
 export class PaymentService {
+    constructor(
+        private userService: UserService,
+    ) {}
     async createPayment(userId: string): Promise<string> {
         const stripe = require("stripe")(process.env.STRIPE_API_KEY)
 
@@ -16,16 +20,13 @@ export class PaymentService {
             ],
             metadata: { userId: userId },
         })
-        console.log(session)
-        return session
+        return session.url
     }
 
     async handleWebhook(webhookData): Promise<void> {
         const session = webhookData.data.object
-
         if (webhookData.type === "checkout.session.completed") {
-            const userId = session.metadata.userId
-            console.log(`Paiement complet pour l'utilisateur ID: ${userId}`)
+            this.userService.edit(session.metadata.userId, { role: "premium" })
         }
     }
 }
