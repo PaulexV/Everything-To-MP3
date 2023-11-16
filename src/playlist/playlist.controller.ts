@@ -4,6 +4,7 @@ import { Controller, Get, Query, Res, Headers, Req } from "@nestjs/common"
 import { Response } from "express"
 import { PlaylistService } from "./playlist.service"
 import { RateLimit } from "nestjs-rate-limiter"
+import { UserService } from "../user/user.service"
 
 @ApiTags("Playlist")
 @ApiBearerAuth()
@@ -12,6 +13,7 @@ export class PlaylistController {
     constructor(
         private readonly playlistService: PlaylistService,
         private readonly AuthService: AuthService,
+        private readonly userService: UserService,
     ) {}
 
     @RateLimit({
@@ -34,6 +36,8 @@ export class PlaylistController {
             res.status(401).send("Unauthorized")
             return
         }
+        await this.userService.removeCredit(req.user.id)
+
         await this.playlistService.downloadPlaylist(playlistUrl, res)
     }
 }
