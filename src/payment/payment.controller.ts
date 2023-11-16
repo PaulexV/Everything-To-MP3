@@ -9,7 +9,7 @@ import {
     Req,
 } from "@nestjs/common"
 import { PaymentService } from "./payment.service"
-import { Public } from "src/auth/auth.service"
+import { Public } from "../auth/auth.service"
 import Stripe from "stripe"
 import { Request } from "express"
 
