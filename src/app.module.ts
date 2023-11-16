@@ -8,6 +8,7 @@ import { AuthModule } from "./auth/auth.module"
 import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
+import { CacheModule } from "@nestjs/cache-manager"
 import { PaymentModule } from "./payment/payment.module"
 
 import * as dotenv from "dotenv"
@@ -16,6 +17,8 @@ import { RateLimiterGuard, RateLimiterModule } from "nestjs-rate-limiter"
 dotenv.config()
 @Module({
     imports: [
+        CacheModule.register({ isGlobal: true }),
+
         // Conditionnellement importer le module en fonction de l'environnement Docker
         ...(process.env.DOCKER_CONTAINER === "true"
             ? [MongooseModule.forRoot(process.env.MONGODB_URL_DOCKER)]
