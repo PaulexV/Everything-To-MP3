@@ -12,7 +12,8 @@ import {
 } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
-import { shortenUrl } from "../helper/helper"
+import { sanitizeFileName, shortenUrl } from "../helper/helper"
+import * as path from "path"
 import { RateLimit } from "nestjs-rate-limiter"
 import { UserService } from "src/user/user.service"
 
@@ -50,11 +51,18 @@ export class SongController {
         await this.userService.removeCredit(req.user.id)
 
         const fromDB = await this.songService.getSongFromURL(shorten)
-        if (fromDB) {
-            // const file = createReadStream(fromDB.filename);
-            // res.send(new StreamableFile(file))
 
-            res.send(await this.songService.addPopularity(fromDB))
+        if (fromDB) {
+            const music_title = await this.songService.getMusicTitle(url)
+            const blobName = path.basename(sanitizeFileName(music_title, "mp3"))
+
+            await this.songService.addPopularity(fromDB)
+            if (await this.songService.blobExists(blobName)) {
+                const downloadUrl = this.songService.getDownloadUrl(blobName)
+                res.send(downloadUrl)
+            } else {
+                await this.songService.downloadSong(shorten, title, res)
+            }
         } else {
             await this.songService.downloadSong(shorten, title, res)
         }
