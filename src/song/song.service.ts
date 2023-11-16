@@ -81,12 +81,12 @@ export class SongService {
         const musicTitle = title ?? (await this.getMusicTitle(url))
 
         const sanitizedTitle = sanitizeFileName(musicTitle, "mp3")
-        const blobName = path.basename(sanitizedTitle);
+        const blobName = path.basename(sanitizedTitle)
 
         if (await this.blobExists(blobName)) {
-            const downloadUrl = this.getDownloadUrl(blobName);
-            res.redirect(downloadUrl);
-            return;
+            const downloadUrl = this.getDownloadUrl(blobName)
+            res.redirect(downloadUrl)
+            return
         }
         const filePath = path.join(__dirname, "../../downloads", sanitizedTitle)
 
@@ -117,28 +117,31 @@ export class SongService {
         await this.create(song)
     }
 
-
     getContainerClient() {
-        const account = process.env.ACCOUNT;
-        const accountKey = process.env.ACCOUNT_KEY;
-        const containerName = process.env.CONTAINER_NAME;
+        const account = process.env.ACCOUNT
+        const accountKey = process.env.ACCOUNT_KEY
+        const containerName = process.env.CONTAINER_NAME
 
-        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+        const sharedKeyCredential = new StorageSharedKeyCredential(
+            account,
+            accountKey,
+        )
         const blobServiceClient = new BlobServiceClient(
-            `https://${account}.blob.core.windows.net`, sharedKeyCredential
-        );
+            `https://${account}.blob.core.windows.net`,
+            sharedKeyCredential,
+        )
 
-        return blobServiceClient.getContainerClient(containerName);
+        return blobServiceClient.getContainerClient(containerName)
     }
 
     async blobExists(blobName: string): Promise<boolean> {
-        const containerClient = this.getContainerClient();
-        const blobClient = containerClient.getBlobClient(blobName);
-        return blobClient.exists();
+        const containerClient = this.getContainerClient()
+        const blobClient = containerClient.getBlobClient(blobName)
+        return blobClient.exists()
     }
 
     async uploadToAzureBlob(filePath) {
-        const containerClient = this.getContainerClient();
+        const containerClient = this.getContainerClient()
         const blobName = path.basename(filePath)
         const blockBlobClient = containerClient.getBlockBlobClient(blobName)
 
@@ -172,31 +175,41 @@ export class SongService {
     }
 
     getDownloadUrl(blobName) {
-        const containerClient = this.getContainerClient();
-    
-        const blobClient = containerClient.getBlobClient(blobName);
-        const sasToken = this.generateBlobSasToken(containerClient, blobName);
-    
-        return `${blobClient.url}?${sasToken}`;
+        const containerClient = this.getContainerClient()
+
+        const blobClient = containerClient.getBlobClient(blobName)
+        const sasToken = this.generateBlobSasToken(containerClient, blobName)
+
+        return `${blobClient.url}?${sasToken}`
     }
-    
+
     generateBlobSasToken(containerClient, blobName) {
-        const { StorageSharedKeyCredential, generateBlobSASQueryParameters, BlobSASPermissions } = require("@azure/storage-blob");
-    
-        const accountName = process.env.ACCOUNT;
-        const accountKey = process.env.ACCOUNT_KEY;
-        const sharedKeyCredential = new StorageSharedKeyCredential(accountName, accountKey);
-    
+        const {
+            StorageSharedKeyCredential,
+            generateBlobSASQueryParameters,
+            BlobSASPermissions,
+        } = require("@azure/storage-blob")
+
+        const accountName = process.env.ACCOUNT
+        const accountKey = process.env.ACCOUNT_KEY
+        const sharedKeyCredential = new StorageSharedKeyCredential(
+            accountName,
+            accountKey,
+        )
+
         const sasOptions = {
             containerName: containerClient.containerName,
             blobName: blobName,
             startsOn: new Date(),
             expiresOn: new Date(new Date().valueOf() + 86400), // Le lien expire après 24 heures
             permissions: BlobSASPermissions.parse("r"), // Autorisation de lecture uniquement
-        };
-    
-        const sasToken = generateBlobSASQueryParameters(sasOptions, sharedKeyCredential).toString();
-        return sasToken;
+        }
+
+        const sasToken = generateBlobSASQueryParameters(
+            sasOptions,
+            sharedKeyCredential,
+        ).toString()
+        return sasToken
     }
 
     async getSongFromURL(url: string): Promise<Song | undefined> {
