@@ -7,7 +7,10 @@ import { MongooseModule } from "@nestjs/mongoose"
 import { UserSchema } from "src/user/user.schema"
 
 @Module({
-    imports: [AuthModule, MongooseModule.forFeature([{ name: "User", schema: UserSchema }])],
+    imports: [
+        AuthModule,
+        MongooseModule.forFeature([{ name: "User", schema: UserSchema }]),
+    ],
     controllers: [PlaylistController],
     providers: [PlaylistService, UserService],
     exports: [PlaylistService],
