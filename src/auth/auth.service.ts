@@ -45,7 +45,11 @@ export class AuthService {
         return hashedApiKey
     }
 
-    async verifyApiKey(userId: string, apiKey: string): Promise<boolean> {
+    async verifyApiKey(
+        userId: string,
+        apiKey: string | undefined,
+    ): Promise<boolean> {
+        if (!apiKey) throw new UnauthorizedException()
         const user = await this.userService.getFromId(userId)
         if (!user) {
             return false
