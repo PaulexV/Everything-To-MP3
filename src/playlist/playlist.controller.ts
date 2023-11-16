@@ -3,6 +3,7 @@ import { ApiTags, ApiBearerAuth } from "@nestjs/swagger"
 import { Controller, Get, Query, Res, Headers, Req } from "@nestjs/common"
 import { Response } from "express"
 import { PlaylistService } from "./playlist.service"
+import { RateLimit } from "nestjs-rate-limiter"
 
 @ApiTags("Playlist")
 @ApiBearerAuth()
@@ -13,7 +14,12 @@ export class PlaylistController {
         private readonly AuthService: AuthService,
     ) {}
 
-    @Get("download_playlist")
+    @RateLimit({
+        keyPrefix: "download",
+        points: 5,
+        duration: 15,
+    })
+    @Get("download")
     async downloadSong(
         @Headers("x-api-key") apiKey: string,
         @Query("url") playlistUrl: string,
