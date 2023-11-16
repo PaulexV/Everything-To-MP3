@@ -5,7 +5,7 @@ import { SongController } from "./song.controller"
 import { SongService } from "./song.service"
 import { AuthModule } from "../auth/auth.module"
 import { UserService } from "../user/user.service"
-import { UserSchema } from "src/user/user.schema"
+import { UserSchema } from "../user/user.schema"
 
 @Module({
     imports: [

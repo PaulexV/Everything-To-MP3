@@ -4,7 +4,7 @@ import { Controller, Get, Query, Res, Headers, Req } from "@nestjs/common"
 import { Response } from "express"
 import { PlaylistService } from "./playlist.service"
 import { RateLimit } from "nestjs-rate-limiter"
-import { UserService } from "src/user/user.service"
+import { UserService } from "../user/user.service"
 
 @ApiTags("Playlist")
 @ApiBearerAuth()

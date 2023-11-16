@@ -15,7 +15,7 @@ import { Response } from "express"
 import { sanitizeFileName, shortenUrl } from "../helper/helper"
 import * as path from "path"
 import { RateLimit } from "nestjs-rate-limiter"
-import { UserService } from "src/user/user.service"
+import { UserService } from "../user/user.service"
 
 @ApiTags("Song")
 @ApiBearerAuth()
