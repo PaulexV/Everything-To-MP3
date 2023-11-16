@@ -12,8 +12,7 @@ import {
 import { SongService } from "./song.service"
 import { Response } from "express"
 import { shortenUrl } from "src/helper/helper"
-import { createReadStream } from "fs"
-import { log } from "console"
+import { RateLimit } from "nestjs-rate-limiter"
 
 @ApiTags("Song")
 @ApiBearerAuth()
@@ -23,7 +22,11 @@ export class SongController {
         private readonly songService: SongService,
         private readonly AuthService: AuthService,
     ) {}
-
+    @RateLimit({
+        keyPrefix: 'download',
+        points: 5,
+        duration: 15,
+      })
     @Get("download")
     async downloadSong(
         @Headers("x-api-key") apiKey: string,
@@ -41,6 +44,7 @@ export class SongController {
             return
         }
         const shorten = shortenUrl(url)
+        
         const fromDB = await this.songService.getSongFromURL(shorten)
         if (fromDB) {
             // const file = createReadStream(fromDB.filename);
