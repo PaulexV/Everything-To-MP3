@@ -37,6 +37,7 @@ export class UserService {
             role: "free",
             password: hash,
             limit: 200,
+            apiKey: "",
         }
 
         return new this.userModel(newUser).save()
