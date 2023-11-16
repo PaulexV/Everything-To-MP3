@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
-import { shortenUrl } from "src/helper/helper"
+import { shortenUrl } from "../helper/helper"
 import { createReadStream } from "fs"
 import { log } from "console"
 
