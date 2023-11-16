@@ -2,8 +2,8 @@ import { Body, Controller, Patch, Post, Put } from "@nestjs/common"
 import { ApiTags } from "@nestjs/swagger"
 import { UserService } from "./user.service"
 import { createUserDto } from "./user.dto"
-import { BadRequestError } from "src/helper/errorManager"
-import { Public } from "src/auth/auth.service"
+import { BadRequestError } from "../helper/errorManager"
+import { Public } from "../auth/auth.service"
 
 @ApiTags("User")
 @Controller("user")

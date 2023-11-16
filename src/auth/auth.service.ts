@@ -4,7 +4,7 @@ import { UserService } from "../user/user.service"
 import { jwtConstants } from "./auth.constants"
 import { SetMetadata } from "@nestjs/common"
 import { default as bcrypt } from "bcryptjs"
-import { User } from "src/user/user.schema"
+import { User } from "../user/user.schema"
 import { v4 as uuidv4 } from "uuid"
 
 export const IS_PUBLIC_KEY = "isPublic"
