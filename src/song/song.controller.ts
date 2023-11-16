@@ -11,7 +11,7 @@ import {
 } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
-import { shortenUrl } from "src/helper/helper"
+import { shortenUrl } from "../helper/helper"
 import { RateLimit } from "nestjs-rate-limiter"
 
 @ApiTags("Song")
