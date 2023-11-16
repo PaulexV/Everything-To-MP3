@@ -55,9 +55,12 @@ export class UserService {
 
     async removeCredit(userId: string) {
         const user = await this.getFromId(userId)
-        
+
         if (user.role !== "free") return
         if (user.limit <= 0) throw BadRequestError("ERR_NO_CREDIT")
-        await this.userModel.findOneAndUpdate({ id: userId }, { $inc: { "limit": -1 } })
+        await this.userModel.findOneAndUpdate(
+            { id: userId },
+            { $inc: { limit: -1 } },
+        )
     }
 }

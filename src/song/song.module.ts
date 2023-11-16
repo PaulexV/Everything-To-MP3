@@ -11,7 +11,7 @@ import { UserSchema } from "src/user/user.schema"
     imports: [
         MongooseModule.forFeature([{ name: Song.name, schema: SongSchema }]),
         MongooseModule.forFeature([{ name: "User", schema: UserSchema }]),
-        AuthModule, 
+        AuthModule,
     ],
     controllers: [SongController],
     providers: [SongService, UserService],

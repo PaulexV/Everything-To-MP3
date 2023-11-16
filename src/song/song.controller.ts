@@ -23,7 +23,7 @@ export class SongController {
     constructor(
         private readonly songService: SongService,
         private readonly AuthService: AuthService,
-        private readonly userService: UserService
+        private readonly userService: UserService,
     ) {}
     @RateLimit({
         keyPrefix: "download",
@@ -38,7 +38,6 @@ export class SongController {
         @Req() req: any,
         @Res() res: Response,
     ) {
-        
         const authorization = await this.AuthService.verifyApiKey(
             req.user.id,
             apiKey,
