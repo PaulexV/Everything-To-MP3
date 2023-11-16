@@ -8,12 +8,15 @@ import { AuthModule } from "./auth/auth.module"
 import { PlaylistModule } from "./playlist/playlist.module"
 import { SearchModule } from "./search/search.module"
 import { UserModule } from "./user/user.module"
+import { CacheModule } from "@nestjs/cache-manager"
 
 import * as dotenv from "dotenv"
 
 dotenv.config()
 @Module({
     imports: [
+        CacheModule.register({ isGlobal: true }),
+
         // Conditionnellement importer le module en fonction de l'environnement Docker
         ...(process.env.DOCKER_CONTAINER === "true"
             ? [MongooseModule.forRoot(process.env.MONGODB_URL_DOCKER)]

@@ -85,11 +85,6 @@ export class SongService {
         const sanitizedTitle = sanitizeFileName(musicTitle, "mp3")
         const filePath = path.join(__dirname, "../../downloads", sanitizedTitle)
 
-        if (fs.existsSync(filePath)) {
-            res.status(400).send(SongService.ERR_MUSIC_ALREADY_DOWNLOADED)
-            return
-        }
-
         let stream
         const writeStream = fs.createWriteStream(filePath)
 
