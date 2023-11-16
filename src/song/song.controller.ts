@@ -2,8 +2,7 @@ import { ApiTags, ApiBearerAuth } from "@nestjs/swagger"
 import { Controller, Get, Query, Res, StreamableFile } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
-import { shortenUrl } from "src/helper/helper"
-import { createReadStream } from "fs"
+import { shortenUrl } from "../helper/helper"
 
 @ApiTags("Song")
 @ApiBearerAuth()

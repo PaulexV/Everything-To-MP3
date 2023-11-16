@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common"
 import { MongooseModule } from "@nestjs/mongoose"
-import { Song, SongSchema } from "src/song/song.schema"
+import { Song, SongSchema } from "../song/song.schema"
 import { SearchController } from "./search.controller"
 import { SearchService } from "./search.service"
 

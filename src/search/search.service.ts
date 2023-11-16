@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
 import { Model } from "mongoose"
-import { Song, SongDocument } from "src/song/song.schema"
+import { Song, SongDocument } from "../song/song.schema"
 
 @Injectable()
 export class SearchService {
