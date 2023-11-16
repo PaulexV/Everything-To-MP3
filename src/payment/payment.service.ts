@@ -5,9 +5,7 @@ dotenv.config()
 
 @Injectable()
 export class PaymentService {
-    constructor(
-        private userService: UserService,
-    ) {}
+    constructor(private userService: UserService) {}
     async createPayment(userId: string): Promise<string> {
         const stripe = require("stripe")(process.env.STRIPE_API_KEY)
 
