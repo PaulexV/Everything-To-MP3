@@ -201,8 +201,8 @@ export class SongService {
             containerName: containerClient.containerName,
             blobName: blobName,
             startsOn: new Date(),
-            expiresOn: new Date(new Date().valueOf() + 86400), // Le lien expire après 24 heures
-            permissions: BlobSASPermissions.parse("r"), // Autorisation de lecture uniquement
+            expiresOn: new Date(new Date().valueOf() + 86400),
+            permissions: BlobSASPermissions.parse("r"),
         }
 
         const sasToken = generateBlobSASQueryParameters(
