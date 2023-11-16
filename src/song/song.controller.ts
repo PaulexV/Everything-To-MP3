@@ -8,11 +8,13 @@ import {
     Req,
     Res,
     StreamableFile,
+    UnauthorizedException,
 } from "@nestjs/common"
 import { SongService } from "./song.service"
 import { Response } from "express"
 import { shortenUrl } from "../helper/helper"
 import { RateLimit } from "nestjs-rate-limiter"
+import { UserService } from "src/user/user.service"
 
 @ApiTags("Song")
 @ApiBearerAuth()
@@ -21,6 +23,7 @@ export class SongController {
     constructor(
         private readonly songService: SongService,
         private readonly AuthService: AuthService,
+        private readonly userService: UserService
     ) {}
     @RateLimit({
         keyPrefix: "download",
@@ -35,15 +38,17 @@ export class SongController {
         @Req() req: any,
         @Res() res: Response,
     ) {
+        
         const authorization = await this.AuthService.verifyApiKey(
             req.user.id,
             apiKey,
         )
         if (!authorization) {
-            res.status(401).send("Unauthorized")
-            return
+            throw new UnauthorizedException()
         }
         const shorten = shortenUrl(url)
+
+        await this.userService.removeCredit(req.user.id)
 
         const fromDB = await this.songService.getSongFromURL(shorten)
         if (fromDB) {
