@@ -13,12 +13,12 @@ export class PlaylistController {
         private readonly playlistService: PlaylistService,
         private readonly AuthService: AuthService,
     ) {}
-    
+
     @RateLimit({
-        keyPrefix: 'download',
+        keyPrefix: "download",
         points: 5,
         duration: 15,
-      })
+    })
     @Get("download")
     async downloadSong(
         @Headers("x-api-key") apiKey: string,

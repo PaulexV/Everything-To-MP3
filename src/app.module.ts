@@ -25,7 +25,7 @@ dotenv.config()
         SearchModule,
         UserModule,
         RateLimiterModule.register({
-            keyPrefix: 'global',
+            keyPrefix: "global",
             points: 30,
             duration: 60,
         }),
