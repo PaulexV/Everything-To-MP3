@@ -13,4 +13,5 @@ export class editUserDto {
     password?: string
     role?: "free" | "premium" | "admin"
     limit?: number
+    apiKey?: string
 }

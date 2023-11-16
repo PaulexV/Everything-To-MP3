@@ -1,3 +1,7 @@
+import scdl from "soundcloud-downloader"
+import ytdl from "ytdl-core"
+import { BadRequestError } from "./errorManager"
+
 export function sanitizeFileName(
     fileName: string,
     fileExtension: string,
@@ -18,4 +22,18 @@ export function isPlaylistUrl(url: string): boolean {
     return (
         youtubePlaylistPattern.test(url) || soundcloudPlaylistPattern.test(url)
     )
+}
+
+export const shortenUrl = (url: string): string => {
+    const newURL = new URL(url)
+    if (ytdl.validateURL(url)) {
+        const v = newURL.searchParams.get("v")
+        newURL.search = ""
+        newURL.searchParams.append("v", v)
+    } else if (scdl.isValidUrl(url)) {
+        newURL.search = ""
+    } else {
+        throw BadRequestError("Invalid URL")
+    }
+    return newURL.toString()
 }

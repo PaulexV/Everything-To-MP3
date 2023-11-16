@@ -21,6 +21,10 @@ export class Song {
     @ApiProperty()
     @Prop({ required: true })
     originalLink: string
+
+    @ApiProperty()
+    @Prop({ required: true })
+    popularity: number
 }
 
 export const SongSchema = SchemaFactory.createForClass(Song)

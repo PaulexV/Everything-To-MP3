@@ -1,4 +1,4 @@
-import { ApiBody, ApiTags, ApiBearerAuth } from "@nestjs/swagger"
+import { ApiBody, ApiTags } from "@nestjs/swagger"
 import {
     Body,
     Controller,
@@ -6,7 +6,6 @@ import {
     HttpCode,
     HttpStatus,
     Get,
-    UseGuards,
     Request,
 } from "@nestjs/common"
 import { AuthService, Public } from "./auth.service"
@@ -32,8 +31,12 @@ export class AuthController {
     }
 
     @Get("profile")
-    @ApiBearerAuth()
     getProfile(@Request() req: any) {
         return req.user
+    }
+
+    @Get("apiKey")
+    getApiKey(@Request() req: any) {
+        return this.authService.generateApiKey(req.user.id)
     }
 }

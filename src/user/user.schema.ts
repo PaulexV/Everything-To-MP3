@@ -25,6 +25,10 @@ export class User {
     @ApiProperty()
     @Prop({ required: true })
     limit: number
+
+    @ApiProperty()
+    @Prop({ required: false })
+    apiKey: string
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
