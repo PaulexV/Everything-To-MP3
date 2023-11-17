@@ -19,7 +19,7 @@ export class AuthController {
 
     @Public()
     @HttpCode(HttpStatus.OK)
-    @Post("getAccessToken")
+    @Post("accessToken")
     @ApiBody({
         type: SignInDto,
         required: true,

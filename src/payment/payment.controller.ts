@@ -32,7 +32,7 @@ export class PaymentController {
         type: String,
     })
     @ApiBearerAuth()
-    @Get("create-link")
+    @Get("createLink")
     async createLink(@Req() req: any) {
         console.log(req.user.id)
         let userId = req.user.id
