@@ -1,5 +1,5 @@
 import { AuthService } from "./../auth/auth.service"
-import { ApiTags, ApiBearerAuth } from "@nestjs/swagger"
+import { ApiTags, ApiBearerAuth, ApiResponse } from "@nestjs/swagger"
 import { Controller, Get, Query, Res, Headers, Req } from "@nestjs/common"
 import { Response } from "express"
 import { PlaylistService } from "./playlist.service"
@@ -16,6 +16,15 @@ export class PlaylistController {
         private readonly userService: UserService,
     ) {}
 
+    @ApiResponse({
+        status: 200,
+        description:
+            "Return a zip folder, containing all the songs of the playlist",
+    })
+    @ApiResponse({
+        status: 401,
+        description: "Unauthorized",
+    })
     @RateLimit({
         keyPrefix: "download",
         points: 5,

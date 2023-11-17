@@ -1,5 +1,5 @@
 import { Body, Controller, Patch, Post, Put } from "@nestjs/common"
-import { ApiTags } from "@nestjs/swagger"
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger"
 import { UserService } from "./user.service"
 import { createUserDto } from "./user.dto"
 import { BadRequestError } from "../helper/errorManager"
@@ -19,6 +19,7 @@ export class UserController {
         )
     }
 
+    @ApiBearerAuth()
     @Patch("upgrade")
     async upgrade(@Body() userDto: Record<string, string>) {
         const user = await this.userService.getFromId(userDto.id)
@@ -26,6 +27,8 @@ export class UserController {
             throw BadRequestError("Can only upgrade user with free plan")
         return this.userService.edit(userDto.id, { role: "premium" })
     }
+
+    @ApiBearerAuth()
     @Patch("downgrade")
     async downgrade(@Body() userDto: Record<string, string>) {
         const user = await this.userService.getFromId(userDto.id)
