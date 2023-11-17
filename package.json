@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@azure/storage-blob": "^12.16.0",
+        "@nestjs/cache-manager": "^2.1.1",
         "@nestjs/common": "^9.0.0",
         "@nestjs/core": "^9.0.0",
         "@nestjs/jwt": "^10.1.1",

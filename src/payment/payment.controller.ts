@@ -1,4 +1,9 @@
-import { ApiTags } from "@nestjs/swagger"
+import {
+    ApiBearerAuth,
+    ApiExcludeEndpoint,
+    ApiResponse,
+    ApiTags,
+} from "@nestjs/swagger"
 import {
     Headers,
     Controller,
@@ -21,6 +26,12 @@ export class PaymentController {
         this.stripe = new Stripe(process.env.STRIPE_API_KEY)
     }
 
+    @ApiResponse({
+        status: 200,
+        description: "Return a url redirecting to the payment page.",
+        type: String,
+    })
+    @ApiBearerAuth()
     @Get("create-link")
     async createLink(@Req() req: any) {
         console.log(req.user.id)
@@ -36,10 +47,11 @@ export class PaymentController {
         }
     }
 
+    @ApiExcludeEndpoint()
     @Public()
     @Post("webhook")
     async handleWebhook(
-        @Headers("stripe-signature") signature,
+        @Headers("stripe-signature") signature: string,
         @Req() req: Request,
     ) {
         const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET
