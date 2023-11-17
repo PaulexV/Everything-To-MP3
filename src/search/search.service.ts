@@ -14,14 +14,14 @@ export class SearchService {
         private cacheManager: Cache,
     ) {}
 
-    async exec(searchValue: string): Promise<Song[]> {
+    async exec(searchValue: string | undefined): Promise<Song[]> {
         const cachedData = await this.cacheManager.get("cache-cache")
         if (cachedData) {
             return cachedData as Song[]
         }
         const res = (await this.songModel.find().exec()).filter(s =>
-            s.title.toLowerCase().includes(searchValue.toLowerCase()),
-        )
+            s.title.toLowerCase().includes(searchValue?.toLowerCase()),
+        ).sort((a, b) => a.popularity - b.popularity)
         await this.cacheManager.set("cache-cache", res, 600)
 
         return res
