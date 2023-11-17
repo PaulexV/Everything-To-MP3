@@ -1,4 +1,9 @@
-import { ApiBearerAuth, ApiResponse, ApiTags } from "@nestjs/swagger"
+import {
+    ApiBearerAuth,
+    ApiExcludeEndpoint,
+    ApiResponse,
+    ApiTags,
+} from "@nestjs/swagger"
 import {
     Headers,
     Controller,
@@ -42,10 +47,7 @@ export class PaymentController {
         }
     }
 
-    @ApiResponse({
-        status: 400,
-        description: "Bad request",
-    })
+    @ApiExcludeEndpoint()
     @Public()
     @Post("webhook")
     async handleWebhook(
