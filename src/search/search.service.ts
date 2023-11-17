@@ -19,9 +19,11 @@ export class SearchService {
         if (cachedData) {
             return cachedData as Song[]
         }
-        const res = (await this.songModel.find().exec()).filter(s =>
-            s.title.toLowerCase().includes(searchValue?.toLowerCase()),
-        ).sort((a, b) => a.popularity - b.popularity)
+        const res = (await this.songModel.find().exec())
+            .filter(s =>
+                s.title.toLowerCase().includes(searchValue?.toLowerCase()),
+            )
+            .sort((a, b) => a.popularity - b.popularity)
         await this.cacheManager.set("cache-cache", res, 600)
 
         return res
