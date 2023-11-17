@@ -10,7 +10,7 @@ import {
 } from "@nestjs/common"
 import { AuthService, Public } from "./auth.service"
 import { SignInDto } from "./auth.dto"
-import { User } from "src/user/user.schema"
+import { User } from "../user/user.schema"
 
 @ApiTags("Authentication")
 @Controller("auth")
