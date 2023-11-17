@@ -90,11 +90,6 @@ export class SongService {
         }
         const filePath = path.join(__dirname, "../../downloads", sanitizedTitle)
 
-        if (fs.existsSync(filePath)) {
-            res.status(400).send(SongService.ERR_MUSIC_ALREADY_DOWNLOADED)
-            return
-        }
-
         let stream
         const writeStream = fs.createWriteStream(filePath)
 

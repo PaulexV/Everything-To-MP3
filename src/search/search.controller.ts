@@ -6,7 +6,6 @@ import { ApiTags } from "@nestjs/swagger"
 @Controller("search")
 export class SearchController {
     constructor(private readonly searchService: SearchService) {}
-
     @Public()
     @Get()
     search(@Query("value") searchValue: string) {
